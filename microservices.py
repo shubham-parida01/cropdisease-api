@@ -51,7 +51,9 @@ def predict_disease_from_array(img, model, class_names):
 # FastAPI app
 # =========================
 app = FastAPI(title="Crop Disease Prediction API")
-
+class ImageURL(BaseModel):
+    imageUrl: str
+    
 @app.post("/predict/file")
 async def predict_from_file(file: UploadFile = File(...)):
     try:
@@ -66,8 +68,9 @@ async def predict_from_file(file: UploadFile = File(...)):
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 @app.post("/predict/url")
-async def predict_from_url(image_url: str = Query(..., description="URL of the image")):
+async def predict_from_url(data: ImageURL):
     try:
+        image_url = data.imageUrl
         response = requests.get(image_url)
         response.raise_for_status()
         img_bytes = BytesIO(response.content)
