@@ -7,6 +7,7 @@ import requests
 from fastapi import FastAPI, UploadFile, File, Query
 from fastapi.responses import JSONResponse
 import tensorflow as tf
+from pydantic import BaseModel
 
 # =========================
 # Configuration
